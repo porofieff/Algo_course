@@ -1,11 +1,11 @@
 #include <vector>
 using namespace std;
-class DisjSet
+class union_find_data
 {
     public:
     	vector<int> parent, rank;
     	int n;
-    	DisjSet(int _n)
+    	union_find_data(int _n)
     	{
     		parent = rank = vector<int>(_n);
     		n = _n;
@@ -15,22 +15,30 @@ class DisjSet
     			rank[i] = 0;
     		}
     	}
-    	int find(int x)
+    	int findD(int x)
     	{
     		if (parent[x] != x)
-    			parent[x] = find(parent[x]);
+            {
+    			parent[x] = findD(parent[x]);
+            }
     		return parent[x];
     	}
-    	void Union(int x, int y)
+    	void unionD(int x, int y)
     	{
-    		int xset = find(x);
-    		int yset = find(y);
+    		int xset = findD(x);
+    		int yset = findD(y);
     		if (xset == yset)
-    			return;
+            {
+                return;
+            }
     		if (rank[xset] < rank[yset])
-    			parent[xset] = yset;
+            {
+                parent[xset] = yset;
+            }
     		else if(rank[xset] > rank[yset])
-    			parent[yset] = xset;
+    		{
+                parent[yset] = xset;
+            }
     		else
     		{
     			parent[yset] = xset;

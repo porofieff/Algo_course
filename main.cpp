@@ -37,7 +37,7 @@ vector<Edge> kruskal(vector<vector<int>>& adjMatrix, int n)
         edges[j + 1] = key;
     }
 
-    DisjSet ds(n);
+    union_find_data ds(n);
     vector<Edge> mst;
     int totalWeight = 0;
 
@@ -47,9 +47,10 @@ vector<Edge> kruskal(vector<vector<int>>& adjMatrix, int n)
         int u = e.u;
         int v = e.v;
 
-        if (ds.find(u) != ds.find(v)) {
+        if (ds.findD(u) != ds.findD(v))
+        {
             mst.push_back(e);
-            ds.Union(u, v);
+            ds.unionD(u, v);
             totalWeight += e.weight;
         }
     }
@@ -76,7 +77,8 @@ void bfs(const vector<vector<int>>& adjMatrix, int start, const vector<string>& 
         cout << vertices[current] << " ";
 
         for (int i = 0; i < n; i++) {
-            if (adjMatrix[current][i] != 0 && !visited[i]) {
+            if (adjMatrix[current][i] != 0 && !visited[i])
+            {
                 q.push(i);
                 visited[i] = true;
             }
@@ -85,7 +87,8 @@ void bfs(const vector<vector<int>>& adjMatrix, int start, const vector<string>& 
     cout << endl;
 }
 
-void dfs(const vector<vector<int>>& adjMatrix, int start, const vector<string>& vertices) {
+void dfs(const vector<vector<int>>& adjMatrix, int start, const vector<string>& vertices)
+{
     int n = adjMatrix.size();
     vector<bool> visited(n, false);
     Stack<int> s;
@@ -93,17 +96,21 @@ void dfs(const vector<vector<int>>& adjMatrix, int start, const vector<string>& 
     s.push(start);
 
     cout << "DFS: ";
-    while (!s.empty()) {
+    while (!s.empty())
+    {
         int current = s.top();
         s.pop();
 
-        if (!visited[current]) {
+        if (!visited[current])
+        {
             cout << vertices[current] << " ";
             visited[current] = true;
         }
 
-        for (int i = n - 1; i >= 0; i--) {
-            if (adjMatrix[current][i] != 0 && !visited[i]) {
+        for (int i = n - 1; i >= 0; i--)
+        {
+            if (adjMatrix[current][i] != 0 && !visited[i])
+            {
                 s.push(i);
             }
         }
@@ -126,7 +133,8 @@ int main()
     while (true)
     {
         ifstream file("input.txt");
-        if (!file.is_open()) {
+        if (!file.is_open())
+        {
             cout << "Error!" << endl;
             return 1;
         }
@@ -137,20 +145,27 @@ int main()
         getline(file, line);
         stringstream ss(line);
         string vertex;
-        while (ss >> vertex) {
+
+        while (ss >> vertex)
+        {
             vertices.push_back(vertex);
         }
 
         int n = vertices.size();
 
         vector<vector<int>> adjMatrix(n, vector<int>(n, 0));
-        for (int i = 0; i < n; i++) {
+
+        for (int i = 0; i < n; i++)
+        {
             getline(file, line);
             stringstream rowStream(line);
-            for (int j = 0; j < n; j++) {
+
+            for (int j = 0; j < n; j++)
+            {
                 rowStream >> adjMatrix[i][j];
             }
         }
+
         file.close();
 
         menu();
